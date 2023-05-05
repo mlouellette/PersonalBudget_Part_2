@@ -1,12 +1,30 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+const port = 3000;
 
-const PORT = process.env.PORT || 3000;
+// Apply the body-parser middleware to handle JSON and URL-encoded data
+app.use(bodyParser.json())
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
-app.use(express.json());
+// Mount the contentsRouter at the '/api' path
+const conRouter = require('./route/contents-route');
+app.use('/api', conRouter);
 
-// Mount your existing apiRouter below at the '/api' path.
-const apiRouter = require('./server/api');
-app.use('/api', apiRouter);
+// Mount the envelopesRouter at the '/api' path
+const envRouter = require('./route/envelopes-route');
+app.use('/api', envRouter);
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+// Default route that responds with "hello world"
+app.get('/', (request, response) => {
+    response.send("hello world")
+});
+
+// Start the server on the specified port
+app.listen(port, () => {
+    console.log(`App running on port ${port}.`)
+});
