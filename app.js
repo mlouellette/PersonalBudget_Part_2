@@ -19,6 +19,10 @@ app.use('/api', conRouter);
 const envRouter = require('./route/envelopes-route');
 app.use('/api', envRouter);
 
+// Mount the transactionsRouter at the '/api' path
+const transRouter = require('./route/transactions-route');
+app.use('/api', transRouter);
+
 // Default route that responds with "hello world"
 app.get('/', (request, response) => {
     response.send("hello world")
@@ -28,3 +32,8 @@ app.get('/', (request, response) => {
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 });
+
+module.exports = function() { 
+  return 'hello1';
+
+};

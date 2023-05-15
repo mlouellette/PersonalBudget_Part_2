@@ -11,6 +11,16 @@ function validateEnvelope(envelope) {
 
 }
 
+function transactionEnvelope(envelope) {
+    const schema = {
+        payment_recipient: Joi.string().min(3).required(),
+        payment_amount: Joi.number().min(1).required()
+
+    };
+    return Joi.validate(envelope, schema);
+
+}
+
 function updateEnvelope(envelope) {
     const schema = {
         amount: Joi.number().min(1).required()
@@ -23,5 +33,6 @@ function updateEnvelope(envelope) {
 
 module.exports = {
     validateEnvelope,
-    updateEnvelope
+    updateEnvelope,
+    transactionEnvelope
 }

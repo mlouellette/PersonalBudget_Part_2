@@ -9,6 +9,18 @@ contentsRouter.post("/create/:id", (request, response) => {
   const { title, amount } = request.body;
   const envelope_id = request.params.id;
 
+  pool.query(
+    "SELECT * FROM envelopes WHERE id = $1",
+    [envelope_id],
+    (error1, envResults) => {
+      if (error1) {
+        throw error1;
+      }
+
+      if (envResults.rowCount === 0) {
+        return response.status(404).send(`Envelope not found with ID: ${envelope_id}`);
+      }
+
   const { error } = validateEnvelope(request.body);
   if (error) return response.status(404).send(error.details[0].message);
 
@@ -26,6 +38,7 @@ contentsRouter.post("/create/:id", (request, response) => {
         );
     }
   );
+})
 });
 
 // Transfer content from one envelope to another envelope
